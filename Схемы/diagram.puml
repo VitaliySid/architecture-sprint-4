@@ -1,0 +1,32 @@
+@startuml sequence-diagram
+actor "Оператор" as user
+participant "MES \n Фронтенд" as mes
+participant "MES \n API" as mesApi
+participant "MES \n DB" as mesDb
+participant "Кеш \n (Redis)" as сache
+
+user -> mes : Открытие страницы списка заказов
+mes -> mesApi : Запрос списка заказов
+mesApi -> сache : Проверка кеша
+alt Кеш-попадание
+    сache --> mesApi : Данные из кеша
+else Кеш-промах
+    mesApi -> mesDb : Запрос данных
+    mesDb --> mesApi : Данные из БД
+    mesApi -> сache : Запись данных в кеш
+    сache --> mesApi : Успешный ответ
+    mesApi --> mes : Данные
+end
+
+mes -> user : Список заказов
+
+user -> mes : Изменение статуса заказа
+mes -> mesApi : Запрос обновления \n статуса заказа
+mesApi -> mesDb : Сохранение статуса
+mesDb --> mesApi : Успешный ответ
+mesApi -> сache : Инвалидация кеша
+сache --> mesApi : Успешный ответ
+mesApi --> mes: Успешный ответ
+mes -> user : Статус обновлен
+
+@enduml

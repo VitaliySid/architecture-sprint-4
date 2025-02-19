@@ -1,1 +1,7 @@
-# architecture-sprint-4
+# Решения
+
+- [Анализ, идентификация проблем и решений, планирование](/Exc1/README.md)  
+- [Мониторинг](/Exc2/README.md)  
+- [Трейсинг](/Exc3/README.md)
+- [Логирование](/Exc4/README.md)
+- [Кеширование](/Exc5/README.md)
